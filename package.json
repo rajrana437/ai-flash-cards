@@ -9,12 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "feather-icons": "^4.29.2",
     "next": "15.0.3",
+    "next-intl": "^3.25.1",
     "openai": "^4.73.1",
     "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106",
-    "next-intl": "^3.25.1",
-    "feather-icons": "^4.29.2"
+    "react-dom": "19.0.0-rc-66855b96-20241106"
   },
   "devDependencies": {
     "@types/node": "^20",
