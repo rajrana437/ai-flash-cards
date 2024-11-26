@@ -1,26 +1,37 @@
-'use client';
+'use client'
 
-import { useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
-import { useTranslations } from 'next-intl';
-import "../globals.css"; // Import global styles for fonts and themes
+import React from "react";
+import Flashcard from "../components/Flashcard";
+import { useFlashcards } from "../hooks/useFlashcards";
 
-const geistSans = "font-[var(--font-geist-sans)]"; // Assuming font is globally defined
+const initialFlashcards = [
+  {
+    word: "la naranja",
+    description: "El jugo de naranja es mi bebida preferida por la mañana.",
+    imageSrc: "/public/naranja.png",
+    type: "noun",
+  },
+];
 
-export default function LocaleHome() {
-  const router = useRouter();
-  const pathname = usePathname(); // Get the current path
+const FlashcardPage: React.FC = () => {
+  const { currentCard, handleKnow, handleForgot } = useFlashcards(initialFlashcards);
 
-  // Extract locale from the pathname, fallback to a default locale if pathname is null
-  const locale = pathname ? pathname.split('/')[1] : 'en'; // Default to 'en'
-
-  const t = useTranslations('Home');
+  if (!currentCard) {
+    return <p className="text-center text-gray-500">You've gone through all the flashcards!</p>;
+  }
 
   return (
-    <div className={`grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 ${geistSans}`}>
-      {/* You can keep the translation content if needed */}
-      <h1>{t("welcome", { locale })}</h1>
-      {/* Empty content, as the redirect will handle page navigation */}
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <Flashcard
+        word={currentCard.word}
+        description={currentCard.description}
+        imageSrc={currentCard.imageSrc}
+        type={currentCard.type}
+        onKnow={handleKnow}
+        onForgot={handleForgot}
+      />
     </div>
   );
-}
+};
+
+export default FlashcardPage;

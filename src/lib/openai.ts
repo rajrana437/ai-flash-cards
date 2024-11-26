@@ -4,28 +4,55 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Function to generate flashcards
 export const generateFlashcards = async (prompt: string) => {
     try {
         const response = await openai.chat.completions.create({
-            model: "gpt-4o-mini", // Using GPT-4o Mini
-            messages: [{ role: "user", content: `Generate flashcards as an array of objects in for learning ${prompt}. Each object should have a 'question' and an 'answer' field.` }],
-            max_tokens: 100,
+            model: "gpt-4o-mini",
+            messages: [
+                {
+                    role: "user",
+                    content: `Provide only a JSON array of flashcards for learning ${prompt}. Each object should have 'question' and 'answer' fields. Do not include any text outside the JSON array.`,
+                },
+            ],
+            max_tokens: 1500, // Increase max tokens to handle longer responses
             temperature: 0.7,
         });
 
-        // Null check or fallback value for `response.choices[0].message.content`
         const content = response.choices[0].message?.content ?? "";
 
-        // Check if the content is a valid JSON string
         if (!content) {
             throw new Error("OpenAI response content is empty or null");
         }
 
+        console.log("Raw content from OpenAI:", content);
 
-        return content; // Return the flashcards generated
-    } catch (error) {
-        console.error("Error generating flashcards:", error);
+        // Attempt direct JSON parsing
+        try {
+            const flashcards = JSON.parse(content);
+            return flashcards;
+        } catch (jsonError) {
+            console.warn("Direct JSON parsing failed. Attempting to extract JSON.");
+
+            // Locate JSON array within the response
+            const jsonStart = content.indexOf("[");
+            const jsonEnd = content.lastIndexOf("]") + 1;
+
+            if (jsonStart === -1 || jsonEnd === -1) {
+                throw new Error("Failed to locate a valid JSON array in the response content.");
+            }
+
+            const jsonString = content.slice(jsonStart, jsonEnd);
+
+            try {
+                const flashcards = JSON.parse(jsonString);
+                return flashcards;
+            } catch (finalError: any) {
+                console.error("Failed to parse extracted JSON:", finalError.message);
+                throw new Error("OpenAI response content is not a valid JSON format.");
+            }
+        }
+    } catch (error: any) {
+        console.error("Error generating flashcards:", error.message);
         throw new Error("Failed to generate flashcards");
     }
 };
