@@ -190,48 +190,63 @@ const FlashcardPage: React.FC = () => {
       ) : (
         <div className="w-full max-w-md">
           {currentCard ? (
-            <div
-              className="max-w-sm mx-auto rounded-lg shadow-md border p-4"
-              style={{
-                backgroundColor: theme.highlight,
-                borderColor: theme.accent,
-              }}
-            >
-              <h2 className="text-xl font-semibold text-center mb-2">
-                {currentCard.question}
-              </h2>
-              {showAnswer && (
-                <p className="text-sm text-center mt-4">{currentCard.answer}</p>
-              )}
-              <div className="flex justify-between mt-4">
-                {!showAnswer ? (
-                  <>
-                    <button
-                      onClick={handleForgot}
-                      className="flex-1 py-2 px-4 rounded-lg mr-2"
-                      style={{ backgroundColor: theme.accent }}
-                    >
-                      😕 Forgot
-                    </button>
-                    <button
-                      onClick={handleKnow}
-                      className="flex-1 py-2 px-4 rounded-lg ml-2"
-                      style={{ backgroundColor: theme.accent, color: theme.text }}
-                    >
-                      😊 Know
-                    </button>
-                  </>
-                ) : (
-                  <button
-                    onClick={handleNext}
-                    className="w-full py-2 px-4 rounded-lg"
-                    style={{ backgroundColor: theme.accent, color: theme.text }}
-                  >
-                    Next Question
-                  </button>
-                )}
-              </div>
-            </div>
+           <div
+           className="max-w-md mx-auto rounded-3xl shadow-xl border p-6 flex flex-col items-center"
+           style={{
+             backgroundColor: theme.highlight,
+             borderColor: theme.accent,
+           }}
+         >
+           <h2 className="text-2xl font-bold text-center mb-4">
+             {currentCard.question}
+           </h2>
+           {showAnswer && (
+             <p className="text-base text-center mt-6 bg-white p-4 rounded-lg shadow-md">
+               {currentCard.answer}
+             </p>
+           )}
+           <div className="flex justify-between mt-8 w-full">
+             {!showAnswer ? (
+               <>
+                 <button
+                   onClick={handleForgot}
+                   className="flex-1 py-3 px-6 rounded-2xl mr-2 font-semibold"
+                   style={{
+                     backgroundColor: theme.accent,
+                     color: theme.text,
+                     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                   }}
+                 >
+                   😕 Forgot
+                 </button>
+                 <button
+                   onClick={handleKnow}
+                   className="flex-1 py-3 px-6 rounded-2xl ml-2 font-semibold"
+                   style={{
+                     backgroundColor: theme.accent,
+                     color: theme.text,
+                     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                   }}
+                 >
+                   😊 Know
+                 </button>
+               </>
+             ) : (
+               <button
+                 onClick={handleNext}
+                 className="w-full py-3 px-6 rounded-2xl font-semibold"
+                 style={{
+                   backgroundColor: theme.accent,
+                   color: theme.text,
+                   boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                 }}
+               >
+                 Next Question
+               </button>
+             )}
+           </div>
+         </div>
+         
           ) : (
             <div className="text-center">
               <p>You've mastered all the flashcards!</p>
