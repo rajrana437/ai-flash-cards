@@ -15,6 +15,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: "prompt is required and must be a string" });
   }
 
+  console.log(prompt);
+  
+
   try {
     // Generate flashcards based on the prompt
     const flashcards = await generateFlashcards(prompt);

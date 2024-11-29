@@ -46,7 +46,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <Header />
+      {/* <Header /> */}
       <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
       </div>
