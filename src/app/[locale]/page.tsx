@@ -1,11 +1,84 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 type FlashcardData = {
   question: string;
   answer: string;
 };
+
+const themes = [
+  {
+    name: "Soft Sunrise",
+    background: "#FFFAF0",
+    accent: "#FAD6A5",
+    text: "#6C757D",
+    highlight: "#FFC1CC",
+  },
+  {
+    name: "Mint Cream Bliss",
+    background: "#E8F6EF",
+    accent: "#A7D2CB",
+    text: "#495057",
+    highlight: "#FFB4A2",
+  },
+  {
+    name: "Lavender Dreams",
+    background: "#F4F1FB",
+    accent: "#C8A2C8",
+    text: "#514F59",
+    highlight: "#F8BBD0",
+  },
+  {
+    name: "Peachy Paradise",
+    background: "#FFF4E6",
+    accent: "#FFD6A5",
+    text: "#6C757D",
+    highlight: "#FFE8E8",
+  },
+  {
+    name: "Sage Serenity",
+    background: "#EDF7F6",
+    accent: "#B2DFDB",
+    text: "#4E4E4E",
+    highlight: "#FFB4B4",
+  },
+  {
+    name: "Powder Blue Harmony",
+    background: "#E3F2FD",
+    accent: "#BBDEFB",
+    text: "#37474F",
+    highlight: "#FFCCBC",
+  },
+  {
+    name: "Creamy Pastel Garden",
+    background: "#FAF3E0",
+    accent: "#B7E4C7",
+    text: "#525252",
+    highlight: "#FAD4D4",
+  },
+  {
+    name: "Cotton Candy Vibes",
+    background: "#FFF0F5",
+    accent: "#FFDEE9",
+    text: "#4A4A4A",
+    highlight: "#D7FFFE",
+  },
+  {
+    name: "Warm Breeze",
+    background: "#FFF8E1",
+    accent: "#FFABAB",
+    text: "#616161",
+    highlight: "#FFCECE",
+  },
+  {
+    name: "Gentle Meadow",
+    background: "#F3FFE3",
+    accent: "#D1E8E2",
+    text: "#546E7A",
+    highlight: "#FFE8D6",
+  },
+];
 
 const FlashcardPage: React.FC = () => {
   const [cards, setCards] = useState<FlashcardData[]>([]);
@@ -15,6 +88,7 @@ const FlashcardPage: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [theme, setTheme] = useState(themes[0]);
 
   // Fetch flashcards
   const fetchFlashcards = async (topic: string) => {
@@ -26,10 +100,14 @@ const FlashcardPage: React.FC = () => {
         body: JSON.stringify({ prompt: topic }),
       });
       const data = await response.json();
-      setCards(data.flashcards || []); // Ensure flashcards is an array
+      setCards(data.flashcards || []);
       setCurrentCard(data.flashcards?.[0] || null);
       setIsSubmitted(true);
       setLoading(false);
+
+      // Randomly select a theme
+      const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+      setTheme(randomTheme);
     } catch (error) {
       console.error('Error fetching flashcards:', error);
       setLoading(false);
@@ -44,25 +122,25 @@ const FlashcardPage: React.FC = () => {
   };
 
   const handleForgot = () => {
-    setShowAnswer(true); // Show the answer before reshuffling
+    setShowAnswer(true);
   };
 
   const handleNext = () => {
     if (currentCard) {
       if (!masteredCards.includes(currentCard)) {
-        setCards((prevCards) => [...prevCards.slice(1), currentCard]); // Re-add forgotten card
+        setCards((prevCards) => [...prevCards.slice(1), currentCard]);
       } else {
-        setCards((prevCards) => prevCards.slice(1)); // Remove mastered card
+        setCards((prevCards) => prevCards.slice(1));
       }
     }
 
     if (cards.length > 1) {
-      setCurrentCard(cards[1]); // Move to the next card
+      setCurrentCard(cards[1]);
     } else {
-      setCurrentCard(null); // All cards mastered
+      setCurrentCard(null);
     }
 
-    setShowAnswer(false); // Hide the answer for the next card
+    setShowAnswer(false);
   };
 
   const reset = () => {
@@ -82,7 +160,10 @@ const FlashcardPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
+    <div
+      className="min-h-screen flex flex-col items-center justify-center p-4"
+      style={{ backgroundColor: theme.background, color: theme.text }}
+    >
       {!isSubmitted ? (
         <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
           <input
@@ -90,11 +171,17 @@ const FlashcardPage: React.FC = () => {
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
             placeholder="Enter a topic..."
-            className="w-full border border-gray-300 rounded-lg p-2"
+            className="w-full border rounded-lg p-2"
+            style={{ borderColor: theme.accent }}
           />
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
+            className="w-full py-2 rounded-lg"
+            style={{
+              backgroundColor: theme.accent,
+              color: theme.text,
+              borderColor: theme.highlight,
+            }}
             disabled={loading}
           >
             {loading ? 'Loading...' : 'Submit'}
@@ -103,27 +190,33 @@ const FlashcardPage: React.FC = () => {
       ) : (
         <div className="w-full max-w-md">
           {currentCard ? (
-            <div className="max-w-sm mx-auto bg-white rounded-lg shadow-md border border-gray-200 p-4">
-              <h2 className="text-xl font-semibold text-center text-gray-800 mb-2">
+            <div
+              className="max-w-sm mx-auto rounded-lg shadow-md border p-4"
+              style={{
+                backgroundColor: theme.highlight,
+                borderColor: theme.accent,
+              }}
+            >
+              <h2 className="text-xl font-semibold text-center mb-2">
                 {currentCard.question}
               </h2>
               {showAnswer && (
-                <p className="text-sm text-gray-600 text-center mt-4">
-                  {currentCard.answer}
-                </p>
+                <p className="text-sm text-center mt-4">{currentCard.answer}</p>
               )}
               <div className="flex justify-between mt-4">
                 {!showAnswer ? (
                   <>
                     <button
                       onClick={handleForgot}
-                      className="flex-1 bg-gray-100 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-200 mr-2"
+                      className="flex-1 py-2 px-4 rounded-lg mr-2"
+                      style={{ backgroundColor: theme.accent }}
                     >
                       😕 Forgot
                     </button>
                     <button
                       onClick={handleKnow}
-                      className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 ml-2"
+                      className="flex-1 py-2 px-4 rounded-lg ml-2"
+                      style={{ backgroundColor: theme.accent, color: theme.text }}
                     >
                       😊 Know
                     </button>
@@ -131,7 +224,8 @@ const FlashcardPage: React.FC = () => {
                 ) : (
                   <button
                     onClick={handleNext}
-                    className="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600"
+                    className="w-full py-2 px-4 rounded-lg"
+                    style={{ backgroundColor: theme.accent, color: theme.text }}
                   >
                     Next Question
                   </button>
@@ -140,14 +234,13 @@ const FlashcardPage: React.FC = () => {
             </div>
           ) : (
             <div className="text-center">
-              <p className="text-gray-500">
-                {cards.length === 0 ? "You've mastered all the flashcards!" : "Loading..."}
-              </p>
+              <p>You've mastered all the flashcards!</p>
             </div>
           )}
           <button
             onClick={reset}
-            className="mt-4 w-full bg-gray-100 text-gray-800 py-2 rounded-lg hover:bg-gray-200"
+            className="mt-4 w-full py-2 rounded-lg"
+            style={{ backgroundColor: theme.accent, color: theme.text }}
           >
             Reset
           </button>
