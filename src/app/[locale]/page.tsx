@@ -84,15 +84,10 @@ const FlashcardPage: React.FC = () => {
     }
   };
 
-  const handleForgot = () => 
-  {
+  const handleForgot = () => {
     setShowAnswer(true);
-    const randomTheme = themes[Math.floor(Math.random() * themes.length)];
-    setTheme(randomTheme);
 
-    console.log(randomTheme);
-    
-  }
+  };
 
   const handleNext = () => {
     if (currentCard) {
@@ -138,7 +133,7 @@ const FlashcardPage: React.FC = () => {
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
             placeholder="Enter a topic..."
-            className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-offset-2"
+            className="w-full border rounded-lg p-4 text-lg focus:outline-none focus:ring-2 focus:ring-offset-2"
             style={{ borderColor: theme.accent, color: theme.text }}
           />
           <button
@@ -155,63 +150,122 @@ const FlashcardPage: React.FC = () => {
           </button>
         </form>
       ) : (
-        <div className="w-full max-w-md space-y-6">
+        <div className="w-full max-w-lg space-y-6">
           {currentCard ? (
             <div
-              className="rounded-3xl shadow-lg p-8 flex flex-col items-center text-center transition-transform"
-              style={{
-                backgroundColor: theme.highlight,
-                borderColor: theme.accent,
-                border: '2px solid',
-              }}
-            >
-              <h2 className="text-3xl font-bold mb-6">{currentCard.question}</h2>
-              {showAnswer && (
-                <p className="text-lg bg-white p-4 rounded-lg shadow-md mb-6">
-                  {currentCard.answer}
-                </p>
-              )}
-              <div className="flex justify-between w-full space-x-4">
-                {!showAnswer ? (
-                  <>
-                    <button
-                      onClick={handleForgot}
-                      className="flex-1 py-3 px-6 rounded-xl font-semibold hover:bg-opacity-90 transition-all"
-                      style={{
-                        backgroundColor: theme.accent,
-                        color: theme.text,
-                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                      }}
-                    >
-                      😕 Forgot
-                    </button>
-                    <button
-                      onClick={handleKnow}
-                      className="flex-1 py-3 px-6 rounded-xl font-semibold hover:bg-opacity-90 transition-all"
-                      style={{
-                        backgroundColor: theme.accent,
-                        color: theme.text,
-                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                      }}
-                    >
-                      😊 Know
-                    </button>
-                  </>
-                ) : (
-                  <button
-                    onClick={handleNext}
-                    className="w-full py-3 px-6 rounded-xl font-semibold hover:scale-105 transition-transform"
+            className="min-h-screen flex flex-col items-center justify-center p-6"
+            style={{ backgroundColor: theme.background, color: theme.text }}
+          >
+            {currentCard ? (
+              <div
+                className="rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center transition-transform relative"
+                style={{
+                  backgroundColor: theme.highlight,
+                  borderColor: theme.accent,
+                  border: '2px solid',
+                  maxWidth: '400px',
+                  width: '100%',
+                }}
+              >
+                {/* Header */}
+                <div className="absolute top-4 left-4 text-sm px-3 py-1 rounded-full bg-white shadow-md font-semibold">
+                  noun
+                </div>
+                <button
+                  className="absolute top-4 right-4 text-sm text-blue-500 font-semibold"
+                  onClick={() => {
+                    const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+                    setTheme(randomTheme);
+                  }}
+                >
+                  change theme
+                </button>
+          
+                {/* Icon */}
+                <div className="w-16 h-16 mb-6">
+                  <img
+                    src="/pngegg.png" // Replace with your own icon/image
+                    alt="Orange"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+          
+                {/* Word */}
+                <h2 className="text-2xl font-extrabold mb-4">{currentCard.question}</h2>
+          
+                {/* Example Sentence */}
+                {showAnswer ? (
+                  <p
+                    className="text-sm bg-white p-4 rounded-lg shadow-md"
                     style={{
-                      backgroundColor: theme.accent,
+                      width: '90%',
                       color: theme.text,
-                      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
                     }}
                   >
-                    Next Question
-                  </button>
+                    {currentCard.answer}
+                  </p>
+                ) : (
+                  <p className="text-sm italic text-gray-500">
+                    Tap "Forgot" or "Know" to reveal the answer
+                  </p>
                 )}
+          
+                {/* Buttons */}
+                <div className="flex justify-between w-full mt-8 space-x-4">
+                  {!showAnswer ? (
+                    <>
+                      <button
+                        onClick={handleForgot}
+                        className="flex-1 py-3 rounded-lg font-bold hover:bg-opacity-90 transition-all"
+                        style={{
+                          backgroundColor: '#f0f0f0',
+                          color: theme.text,
+                          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+                        }}
+                      >
+                        😕 Forgot
+                      </button>
+                      <button
+                        onClick={handleKnow}
+                        className="flex-1 py-3 rounded-lg font-bold hover:bg-opacity-90 transition-all"
+                        style={{
+                          backgroundColor: theme.accent,
+                          color: theme.text,
+                          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+                        }}
+                      >
+                        😊 Know
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={handleNext}
+                      className="w-full py-3 rounded-lg font-bold hover:scale-105 transition-transform"
+                      style={{
+                        backgroundColor: theme.accent,
+                        color: theme.text,
+                        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+                      }}
+                    >
+                      Next Question
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="text-center">
+                <p className="text-lg">You've mastered all the flashcards!</p>
+                <button
+                  onClick={reset}
+                  className="mt-4 py-3 px-6 rounded-lg font-semibold text-lg transition-transform hover:scale-105"
+                  style={{ backgroundColor: theme.accent, color: theme.text }}
+                >
+                  Reset
+                </button>
+              </div>
+            )}
+          </div>
+          
           ) : (
             <div className="text-center">
               <p className="text-lg">You've mastered all the flashcards!</p>
