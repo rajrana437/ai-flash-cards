@@ -11,7 +11,7 @@ export const generateFlashcards = async (prompt: string) => {
             messages: [
                 {
                     role: "user",
-                    content: `Provide only a JSON array of 3 flashcards for learning ${prompt}. Each object should have 'question' and 'answer' fields. Do not include any text outside the JSON array.`,
+                    content: `Provide only a JSON array of 2 flashcards for learning ${prompt}. Each object should have 'question' and 'answer' fields. Do not include any text outside the JSON array.`,
                 },
             ],
             max_tokens: 1500, // Increase max tokens to handle longer responses

@@ -155,39 +155,40 @@ const FlashcardPage: React.FC = () => {
             <div
             className="min-h-screen flex flex-col items-center justify-center p-6"
             style={{ backgroundColor: theme.background, color: theme.text }}
-          >
-            {currentCard ? (
-              <div
-                className="rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center transition-transform relative"
-                style={{
-                  backgroundColor: theme.highlight,
-                  borderColor: theme.accent,
-                  border: '2px solid',
-                  maxWidth: '400px',
-                  width: '100%',
-                }}
               >
-                {/* Header */}
-                <div className="absolute top-4 left-4 text-sm px-3 py-1 rounded-full bg-white shadow-md font-semibold">
-                  noun
-                </div>
-                <button
-                  className="absolute top-4 right-4 text-sm text-blue-500 font-semibold"
-                  onClick={() => {
-                    const randomTheme = themes[Math.floor(Math.random() * themes.length)];
-                    setTheme(randomTheme);
-                  }}
-                >
-                  change theme
-                </button>
-          
-                {/* Icon */}
-                <div className="w-16 h-16 mb-6">
-                  <img
-                    src="/pngegg.png" // Replace with your own icon/image
-                    alt="Orange"
-                    className="w-full h-full object-contain"
-                  />
+                {currentCard ? (
+                  <div
+                    className="rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center transition-transform relative"
+                    style={{
+                      backgroundColor: theme.highlight,
+                      borderWidth: '2px', // Replace 'border: 2px solid'
+                      borderStyle: 'solid',
+                      borderColor: theme.accent, // Use borderColor explicitly
+                      maxWidth: '400px',
+                      width: '100%',
+                    }}
+                  >
+                    {/* Header */}
+                    <div className="absolute top-4 left-4 text-sm px-3 py-1 rounded-full bg-white shadow-md font-semibold">
+                    ThinkStack
+                    </div>
+                    <button
+                      className="absolute top-4 right-4 text-sm text-blue-500 font-semibold"
+                      onClick={() => {
+                        const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+                        setTheme(randomTheme);
+                      }}
+                    >
+                      shuffle theme
+                    </button>
+
+                    {/* Icon */}
+                    <div className="w-16 h-16 mb-6">
+                      <img
+                        src="/pngegg.png" // Replace with your own icon/image
+                        alt="Orange"
+                        className="w-full h-full object-contain"
+                      />
                 </div>
           
                 {/* Word */}
