@@ -55,6 +55,12 @@ const FlashcardPage: React.FC = () => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [theme, setTheme] = useState(themes[0]);
 
+  useEffect(() => {
+    const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+    setTheme(randomTheme);
+  }, [])
+  
+
   const fetchFlashcards = async (topic: string) => {
     try {
       setLoading(true);
@@ -69,8 +75,7 @@ const FlashcardPage: React.FC = () => {
       setIsSubmitted(true);
       setLoading(false);
 
-      const randomTheme = themes[Math.floor(Math.random() * themes.length)];
-      setTheme(randomTheme);
+
     } catch (error) {
       console.error('Error fetching flashcards:', error);
       setLoading(false);
@@ -262,23 +267,24 @@ const FlashcardPage: React.FC = () => {
                   style={{ backgroundColor: theme.accent, color: theme.text }}
                 >
                   Reset
-                </button>
-              </div>
-            )}
-          </div>
-          
+                  </button>
+                </div>
+              )}
+            </div>
+
           ) : (
-            <div className="text-center">
+            <div className="text-center space-y-6">
               <p className="text-lg">You've mastered all the flashcards!</p>
+              <button
+                onClick={reset}
+                className="w-full max-w-md py-3 rounded-lg font-semibold text-lg hover:scale-105 transition-transform"
+                style={{ backgroundColor: theme.accent, color: theme.text }}
+              >
+                Reset
+              </button>
             </div>
           )}
-          <button
-            onClick={reset}
-            className="w-full py-3 rounded-lg font-semibold text-lg hover:scale-105 transition-transform"
-            style={{ backgroundColor: theme.accent, color: theme.text }}
-          >
-            Reset
-          </button>
+
         </div>
       )}
     </div>
