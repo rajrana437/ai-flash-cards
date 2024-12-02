@@ -96,21 +96,27 @@ const FlashcardPage: React.FC = () => {
 
   const handleNext = () => {
     if (currentCard) {
+      // If the current card is not mastered, move it to the end of the deck
       if (!masteredCards.includes(currentCard)) {
         setCards((prevCards) => [...prevCards.slice(1), currentCard]);
       } else {
+        // If the current card is mastered, remove it from the deck
         setCards((prevCards) => prevCards.slice(1));
       }
     }
-
-    if (cards.length > 1) {
-      setCurrentCard(cards[1]);
+  
+    // If only one unmastered card is left, keep repeating it
+    if (cards.length === 1 && !masteredCards.includes(currentCard!)) {
+      setCurrentCard(currentCard); // Repeat the same card
+    } else if (cards.length > 1) {
+      setCurrentCard(cards[1]); // Move to the next card
     } else {
-      setCurrentCard(null);
+      setCurrentCard(null); // End if no cards are left
     }
-
+  
     setShowAnswer(false);
   };
+  
 
   const reset = () => {
     setCards([]);
@@ -258,15 +264,15 @@ const FlashcardPage: React.FC = () => {
                   )}
                 </div>
               </div>
-            ) : (
-              <div className="text-center">
-                <p className="text-lg">You've mastered all the flashcards!</p>
-                <button
-                  onClick={reset}
-                  className="mt-4 py-3 px-6 rounded-lg font-semibold text-lg transition-transform hover:scale-105"
-                  style={{ backgroundColor: theme.accent, color: theme.text }}
-                >
-                  Reset
+              ) : (
+                <div className="text-center space-y-6">
+                  <p className="text-lg">You've mastered all the flashcards!</p>
+                  <button
+                    onClick={reset}
+                    className="w-full max-w-md py-3 rounded-lg font-semibold text-lg hover:scale-105 transition-transform"
+                    style={{ backgroundColor: theme.accent, color: theme.text }}
+                  >
+                    Reset
                   </button>
                 </div>
               )}
