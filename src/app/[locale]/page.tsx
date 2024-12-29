@@ -82,7 +82,7 @@ const FlashcardPage: React.FC = () => {
     if (selectedSet) {
       setCards(selectedSet.words);
       setCurrentCard(selectedSet.words[0]);
-    setIsSubmitted(true);
+      setIsSubmitted(true);
     }
     setLoading(false);
   };
@@ -137,9 +137,10 @@ const FlashcardPage: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center p-4 transition-all"
+      className="min-h-screen flex flex-col items-center justify-center px-4 transition-all"
       style={{ backgroundColor: theme.background, color: theme.text }}
     >
+
       {!isSubmitted ? (
         <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
           <select
@@ -174,16 +175,15 @@ const FlashcardPage: React.FC = () => {
         <div className="w-full max-w-lg space-y-6">
           {currentCard ? (
             <div
-              className="rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center transition-transform relative"
+              className="w-full max-w-sm mx-auto rounded-3xl shadow-2xl p-6 flex flex-col items-center text-center transition-transform relative"
               style={{
                 backgroundColor: theme.highlight,
                 borderWidth: "2px",
                 borderStyle: "solid",
                 borderColor: theme.accent,
-                maxWidth: "400px",
-                width: "100%",
               }}
             >
+
               <div className="absolute top-4 left-4 text-sm px-3 py-1 rounded-full bg-white shadow-md font-semibold">
                 ThinkStack
               </div>
