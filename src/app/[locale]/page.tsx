@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+// import words from './words.json';
 
 type FlashcardData = {
   question: string;
@@ -103,7 +104,7 @@ const FlashcardPage: React.FC = () => {
     if (selectedSet) {
       setCards(selectedSet.words);
       setCurrentCard(selectedSet.words[0]);
-      setIsSubmitted(true);
+    setIsSubmitted(true);
     }
     setLoading(false);
   };
@@ -161,16 +162,6 @@ const FlashcardPage: React.FC = () => {
       className="min-h-screen flex flex-col items-center justify-center p-4 transition-all"
       style={{ backgroundColor: theme.background, color: theme.text }}
     >
-      <button
-        onClick={shuffleTheme}
-        className="absolute top-4 right-4 py-2 px-4 rounded-lg"
-        style={{
-          backgroundColor: theme.accent,
-          color: theme.text,
-        }}
-      >
-        Shuffle Theme
-      </button>
       {!isSubmitted ? (
         <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
           <select
@@ -180,11 +171,11 @@ const FlashcardPage: React.FC = () => {
             style={{ borderColor: theme.accent, color: theme.text }}
           >
             <option value="" disabled>
-              Select a set...
+              Select a set (1-20)
             </option>
-            {[...Array(20)].map((_, index) => (
-              <option key={index + 1} value={index + 1}>
-                Set {index + 1}
+            {Array.from({ length: 20 }, (_, i) => i + 1).map((set) => (
+              <option key={set} value={set}>
+                Set {set}
               </option>
             ))}
           </select>
@@ -198,22 +189,51 @@ const FlashcardPage: React.FC = () => {
             }}
             disabled={loading}
           >
-            {loading ? 'Loading...' : 'Submit'}
+            {loading ? "Loading..." : "Submit"}
           </button>
         </form>
       ) : (
         <div className="w-full max-w-lg space-y-6">
           {currentCard ? (
             <div
-              className="rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center transition-transform"
+              className="rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center transition-transform relative"
               style={{
                 backgroundColor: theme.highlight,
-                border: `2px solid ${theme.accent}`,
+                borderWidth: "2px",
+                borderStyle: "solid",
+                borderColor: theme.accent,
+                maxWidth: "400px",
+                width: "100%",
               }}
             >
+              <div className="absolute top-4 left-4 text-sm px-3 py-1 rounded-full bg-white shadow-md font-semibold">
+                ThinkStack
+              </div>
+              <button
+                className="absolute top-4 right-4 text-sm text-blue-500 font-semibold"
+                onClick={() => {
+                  const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+                  setTheme(randomTheme);
+                }}
+              >
+                shuffle theme
+              </button>
+              <div className="w-16 h-16 mb-6">
+                <img
+                  src="/pngegg.png"
+                  alt="Orange"
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <h2 className="text-2xl font-extrabold mb-4">{currentCard.question}</h2>
               {showAnswer ? (
-                <p className="text-sm bg-white p-4 rounded-lg shadow-md">
+                <p
+                  className="text-sm bg-white p-4 rounded-lg shadow-md"
+                  style={{
+                    width: "90%",
+                    color: theme.text,
+                  }}
+                >
                   {currentCard.answer}
                 </p>
               ) : (
@@ -228,8 +248,9 @@ const FlashcardPage: React.FC = () => {
                       onClick={handleForgot}
                       className="flex-1 py-3 rounded-lg font-bold hover:bg-opacity-90 transition-all"
                       style={{
-                        backgroundColor: '#f0f0f0',
+                        backgroundColor: "#f0f0f0",
                         color: theme.text,
+                        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
                       }}
                     >
                       😕 Forgot
@@ -240,6 +261,7 @@ const FlashcardPage: React.FC = () => {
                       style={{
                         backgroundColor: theme.accent,
                         color: theme.text,
+                        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
                       }}
                     >
                       😊 Know
@@ -252,6 +274,7 @@ const FlashcardPage: React.FC = () => {
                     style={{
                       backgroundColor: theme.accent,
                       color: theme.text,
+                      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
                     }}
                   >
                     Next Question
@@ -277,4 +300,4 @@ const FlashcardPage: React.FC = () => {
   );
 };
 
-export default FlashcardPage;
+export default FlashcardPage
