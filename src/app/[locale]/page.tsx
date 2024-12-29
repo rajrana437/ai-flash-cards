@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-// import words from './words.json';
+import sets from '../components/words.json'
 
 type FlashcardData = {
-  question: string;
-  answer: string;
+  frenchWord: string;
+  englishWord: string;
 };
 
 const themes = [
@@ -46,28 +46,6 @@ const themes = [
   },
 ];
 
-const wordsData = {
-  sets: [
-    {
-      setNumber: 1,
-      words: [
-        { question: "Bonjour", answer: "Hello" },
-        { question: "Merci", answer: "Thank you" },
-        { question: "Oui", answer: "Yes" },
-        { question: "Non", answer: "No" },
-        { question: "Maison", answer: "House" },
-      ],
-    },
-    {
-      setNumber: 2,
-      words: [
-        { question: "Pomme", answer: "Apple" },
-        { question: "Chat", answer: "Cat" },
-      ],
-    },
-  ],
-};
-
 const FlashcardPage: React.FC = () => {
   const [cards, setCards] = useState<FlashcardData[]>([]);
   const [currentCard, setCurrentCard] = useState<FlashcardData | null>(null);
@@ -100,7 +78,7 @@ const FlashcardPage: React.FC = () => {
 
   const loadFlashcards = (setNumber: number) => {
     setLoading(true);
-    const selectedSet = wordsData.sets.find((set) => set.setNumber === setNumber);
+    const selectedSet = sets.sets.find((set) => set.setNumber === setNumber);
     if (selectedSet) {
       setCards(selectedSet.words);
       setCurrentCard(selectedSet.words[0]);
@@ -225,7 +203,7 @@ const FlashcardPage: React.FC = () => {
                   className="w-full h-full object-contain"
                 />
               </div>
-              <h2 className="text-2xl font-extrabold mb-4">{currentCard.question}</h2>
+              <h2 className="text-2xl font-extrabold mb-4">{currentCard.frenchWord}</h2>
               {showAnswer ? (
                 <p
                   className="text-sm bg-white p-4 rounded-lg shadow-md"
@@ -234,11 +212,11 @@ const FlashcardPage: React.FC = () => {
                     color: theme.text,
                   }}
                 >
-                  {currentCard.answer}
+                  {currentCard.englishWord}
                 </p>
               ) : (
                 <p className="text-sm italic text-gray-500">
-                  Tap "Forgot" or "Know" to reveal the answer
+                  Tap "Forgot" or "Know" to reveal the englishWord
                 </p>
               )}
               <div className="flex justify-between w-full mt-8 space-x-4">
